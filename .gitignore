@@ -21,3 +21,6 @@ data/
 *.csv
 # Raw posts for manual checking: sensitive, never commit
 eval/audit/*PRIVATE*
+
+# Synthetic challenge set (no real posts, safe to publish)
+!eval/challenge/*.csv
