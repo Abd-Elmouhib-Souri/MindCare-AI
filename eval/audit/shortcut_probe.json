@@ -1,0 +1,226 @@
+{
+  "empty_after_normalization": {
+    "rows": 50,
+    "by_class": {
+      "non-suicide": 44,
+      "suicide": 6
+    },
+    "examples_repr": [
+      "'\ufe0e \ufe0e \ufe0e \ufe0e \ufe0e \ufe0e \ufe0e \ufe0e \ufe0e \ufe0e \ufe0e \ufe0e \ufe0e \ufe0e \ufe0e \ufe0e \ufe0e \ufe0e \ufe0e \ufe0e '",
+      "'\ud835\ude78 \ud835\udea0\ud835\ude98\ud835\ude97\ud835\ude8d\ud835\ude8e\ud835\ude9b \ud835\ude91\ud835\ude98\ud835\udea0 \ud835\ude9d\ud835\ude91\ud835\ude92\ud835\ude97\ud835\ude90\ud835\ude9c \ud835\udea0\ud835\ude98\ud835\ude9e\ud835\ude95\ud835\ude8d \ud835\ude9e\ud835\ude97\ud835\ude8f\ud835\ude98\ud835\ude95\ud835\ude8d \ud835\ude79\ud835\ude98\ud835\ude8e \ud835\ude96\ud835\ude8a\ud835\ude96'",
+      "'\u170e\u1709\u1708\u1709\u1707\u1704\u170e\u1701\u1710\u170a\u1713\u170a\u1714\u1709\u170e\u1702\u1707\u1713\u170c \u170b\u170e\u170b\u1707\u170a\u170c  \u170a\u170e\u170a\u1707\u170b\u170c\u1705  \u170c\u170a\u1707'",
+      "'\u041f\u0440\u0438\u0432\u0435\u0442 \u0417\u0434\u0440\u0430\u0432\u0441\u0442\u0432\u0443\u0439\u0442\u0435, \u043a\u0430\u043a \u0432\u044b \u0432\u0441\u0435 \u0434\u0435\u043b\u0430\u0435\u0442\u0435?'",
+      "'\u0623\u0646\u0627 \u0623\u062a\u062d\u062f\u062b \u0627\u0644\u0645\u0639\u0643\u0631\u0648\u0646\u0629 \u0647\u0627\u0647\u0627\u0647\u0627 \u0644\u0630\u0627 \u0643\u064a\u0641 \u064a\u0645\u0643\u0646\u0643'"
+    ]
+  },
+  "conflicting_nonempty_texts": 0,
+  "rows_before_cleaning": 232074,
+  "rows_after_cleaning": 231861,
+  "split_sizes": {
+    "train": {
+      "rows": 162489,
+      "class1_share": 0.5
+    },
+    "val": {
+      "rows": 34737,
+      "class1_share": 0.5011
+    },
+    "test": {
+      "rows": 34635,
+      "class1_share": 0.501
+    }
+  },
+  "norm_texts_in_more_than_one_split": 0,
+  "P4_top_weights": {
+    "toward_class1": [
+      [
+        "suicide",
+        19.81
+      ],
+      [
+        "suicidal",
+        16.43
+      ],
+      [
+        "kill",
+        10.6
+      ],
+      [
+        "life",
+        10.23
+      ],
+      [
+        "myself",
+        9.84
+      ],
+      [
+        "die",
+        9.22
+      ],
+      [
+        "pills",
+        7.8
+      ],
+      [
+        "end",
+        6.86
+      ],
+      [
+        "living",
+        6.57
+      ],
+      [
+        "alive",
+        6.51
+      ],
+      [
+        "killing",
+        6.45
+      ],
+      [
+        "mei",
+        6.38
+      ],
+      [
+        "feel",
+        6.38
+      ],
+      [
+        "depression",
+        6.3
+      ],
+      [
+        "kill myself",
+        6.23
+      ],
+      [
+        "anymore",
+        6.15
+      ],
+      [
+        "death",
+        5.95
+      ],
+      [
+        "live",
+        5.92
+      ],
+      [
+        "job",
+        5.89
+      ],
+      [
+        "thoughts",
+        5.85
+      ]
+    ],
+    "toward_class0": [
+      [
+        "teenagers",
+        -6.6
+      ],
+      [
+        "school",
+        -6.16
+      ],
+      [
+        "crush",
+        -5.89
+      ],
+      [
+        "bored",
+        -5.5
+      ],
+      [
+        "guys",
+        -5.29
+      ],
+      [
+        "like",
+        -5.24
+      ],
+      [
+        "horny",
+        -5.03
+      ],
+      [
+        "rn",
+        -4.84
+      ],
+      [
+        "bruh",
+        -4.82
+      ],
+      [
+        "rant",
+        -4.8
+      ],
+      [
+        "we",
+        -4.64
+      ],
+      [
+        "dm",
+        -4.58
+      ],
+      [
+        "minecraft",
+        -4.49
+      ],
+      [
+        "covid",
+        -4.45
+      ],
+      [
+        "teacher",
+        -4.25
+      ],
+      [
+        "boys",
+        -4.24
+      ],
+      [
+        "discord",
+        -4.21
+      ],
+      [
+        "also",
+        -4.06
+      ],
+      [
+        "girl",
+        -4.03
+      ],
+      [
+        "ur",
+        -4.02
+      ]
+    ]
+  },
+  "probes_on_val": {
+    "P0_majority_class": {
+      "accuracy": 0.5011,
+      "macro_f1": 0.3338,
+      "roc_auc": null
+    },
+    "P1_length_only": {
+      "accuracy": 0.7481,
+      "macro_f1": 0.748,
+      "roc_auc": 0.807
+    },
+    "P2_word_filler": {
+      "share_of_class0_val_posts_containing_it": 0.0224,
+      "share_of_class1_val_posts_containing_it": 0.0003
+    },
+    "P3_style_only": {
+      "accuracy": 0.7736,
+      "macro_f1": 0.7735,
+      "roc_auc": 0.8405
+    },
+    "P4_tfidf_logreg": {
+      "accuracy": 0.941,
+      "macro_f1": 0.941,
+      "roc_auc": 0.9844
+    }
+  }
+}
