@@ -19,3 +19,5 @@ temp_input.wav
 .DS_Store
 data/
 *.csv
+# Raw posts for manual checking: sensitive, never commit
+eval/audit/*PRIVATE*

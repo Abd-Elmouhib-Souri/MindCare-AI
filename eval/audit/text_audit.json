@@ -1,0 +1,356 @@
+{
+  "source_file": "Suicide_Detection.csv",
+  "columns": [
+    "Unnamed: 0",
+    "text",
+    "class"
+  ],
+  "rows_raw": 232074,
+  "missing_text": 0,
+  "empty_text": 0,
+  "has_author_or_thread_id": false,
+  "label_values": {
+    "suicide": 116037,
+    "non-suicide": 116037
+  },
+  "class1_share": 0.5,
+  "duplicates": {
+    "exact_duplicate_rows": 0,
+    "normalized_duplicate_rows": 212,
+    "rows_after_dedup": 231862,
+    "texts_with_conflicting_labels": 1,
+    "rows_with_conflicting_labels": 50
+  },
+  "length_words": {
+    "non-suicide": {
+      "mean": 61.2,
+      "median": 31,
+      "p95": 202,
+      "max": 8220,
+      "share_over_150_words": 0.0784
+    },
+    "suicide": {
+      "mean": 202.7,
+      "median": 127,
+      "p95": 630,
+      "max": 9684,
+      "share_over_150_words": 0.4358
+    }
+  },
+  "negation": {
+    "non-suicide": {
+      "share_posts_with_negation": 0.3975,
+      "negations_per_100_words": 1.55
+    },
+    "suicide": {
+      "share_posts_with_negation": 0.8319,
+      "negations_per_100_words": 2.64
+    }
+  },
+  "log_odds_top_words": {
+    "class1": [
+      {
+        "word": "myself",
+        "z": 65.9,
+        "per10k_class1": 50.86,
+        "per10k_class0": 11.52
+      },
+      {
+        "word": "life",
+        "z": 61.4,
+        "per10k_class1": 52.99,
+        "per10k_class0": 15.3
+      },
+      {
+        "word": "to",
+        "z": 58.4,
+        "per10k_class1": 400.1,
+        "per10k_class0": 299.29
+      },
+      {
+        "word": "i'm",
+        "z": 53.8,
+        "per10k_class1": 88.52,
+        "per10k_class0": 44.78
+      },
+      {
+        "word": "i've",
+        "z": 48.1,
+        "per10k_class1": 33.57,
+        "per10k_class0": 10.0
+      },
+      {
+        "word": "don't",
+        "z": 46.6,
+        "per10k_class1": 56.5,
+        "per10k_class0": 26.29
+      },
+      {
+        "word": "suicide",
+        "z": 45.8,
+        "per10k_class1": 16.84,
+        "per10k_class0": 1.38
+      },
+      {
+        "word": "my",
+        "z": 45.2,
+        "per10k_class1": 239.04,
+        "per10k_class0": 177.85
+      },
+      {
+        "word": "feel",
+        "z": 45.0,
+        "per10k_class1": 50.89,
+        "per10k_class0": 23.26
+      },
+      {
+        "word": "can't",
+        "z": 42.3,
+        "per10k_class1": 27.87,
+        "per10k_class0": 8.94
+      },
+      {
+        "word": "want",
+        "z": 40.9,
+        "per10k_class1": 60.4,
+        "per10k_class0": 32.74
+      },
+      {
+        "word": "anymore",
+        "z": 40.4,
+        "per10k_class1": 19.88,
+        "per10k_class0": 4.74
+      },
+      {
+        "word": "kill",
+        "z": 40.0,
+        "per10k_class1": 16.42,
+        "per10k_class0": 2.91
+      },
+      {
+        "word": "die",
+        "z": 39.2,
+        "per10k_class1": 17.85,
+        "per10k_class0": 3.97
+      },
+      {
+        "word": "suicidal",
+        "z": 35.9,
+        "per10k_class1": 10.35,
+        "per10k_class0": 0.84
+      },
+      {
+        "word": "me",
+        "z": 35.1,
+        "per10k_class1": 160.86,
+        "per10k_class0": 121.52
+      },
+      {
+        "word": "family",
+        "z": 34.1,
+        "per10k_class1": 17.39,
+        "per10k_class0": 5.33
+      },
+      {
+        "word": "end",
+        "z": 32.5,
+        "per10k_class1": 16.6,
+        "per10k_class0": 5.34
+      },
+      {
+        "word": "live",
+        "z": 32.2,
+        "per10k_class1": 16.32,
+        "per10k_class0": 5.28
+      },
+      {
+        "word": "job",
+        "z": 32.1,
+        "per10k_class1": 12.0,
+        "per10k_class0": 2.66
+      },
+      {
+        "word": "been",
+        "z": 32.0,
+        "per10k_class1": 39.37,
+        "per10k_class0": 21.86
+      },
+      {
+        "word": "depression",
+        "z": 31.0,
+        "per10k_class1": 10.44,
+        "per10k_class0": 2.06
+      },
+      {
+        "word": "years",
+        "z": 30.6,
+        "per10k_class1": 21.8,
+        "per10k_class0": 9.5
+      },
+      {
+        "word": "pain",
+        "z": 30.4,
+        "per10k_class1": 10.68,
+        "per10k_class0": 2.34
+      },
+      {
+        "word": "living",
+        "z": 29.3,
+        "per10k_class1": 9.42,
+        "per10k_class0": 1.91
+      }
+    ],
+    "class0": [
+      {
+        "word": "filler",
+        "z": -202.6,
+        "per10k_class1": 0.02,
+        "per10k_class0": 87.16
+      },
+      {
+        "word": "you",
+        "z": -116.6,
+        "per10k_class1": 48.82,
+        "per10k_class0": 138.06
+      },
+      {
+        "word": "gt",
+        "z": -76.1,
+        "per10k_class1": 0.58,
+        "per10k_class0": 14.74
+      },
+      {
+        "word": "lt",
+        "z": -75.0,
+        "per10k_class1": 0.27,
+        "per10k_class0": 13.14
+      },
+      {
+        "word": "https",
+        "z": -74.7,
+        "per10k_class1": 0.6,
+        "per10k_class0": 14.34
+      },
+      {
+        "word": "fuck",
+        "z": -73.5,
+        "per10k_class1": 8.47,
+        "per10k_class0": 34.34
+      },
+      {
+        "word": "your",
+        "z": -69.9,
+        "per10k_class1": 9.11,
+        "per10k_class0": 34.06
+      },
+      {
+        "word": "ur",
+        "z": -69.5,
+        "per10k_class1": 0.13,
+        "per10k_class0": 10.87
+      },
+      {
+        "word": "cheese",
+        "z": -68.0,
+        "per10k_class1": 0.02,
+        "per10k_class0": 9.95
+      },
+      {
+        "word": "sus",
+        "z": -67.5,
+        "per10k_class1": 0.0,
+        "per10k_class0": 9.72
+      },
+      {
+        "word": "guys",
+        "z": -60.1,
+        "per10k_class1": 2.52,
+        "per10k_class0": 15.75
+      },
+      {
+        "word": "pop",
+        "z": -57.6,
+        "per10k_class1": 0.18,
+        "per10k_class0": 7.82
+      },
+      {
+        "word": "we",
+        "z": -56.1,
+        "per10k_class1": 19.52,
+        "per10k_class0": 45.69
+      },
+      {
+        "word": "cum",
+        "z": -54.9,
+        "per10k_class1": 0.03,
+        "per10k_class0": 6.53
+      },
+      {
+        "word": "ni",
+        "z": -54.8,
+        "per10k_class1": 0.01,
+        "per10k_class0": 6.46
+      },
+      {
+        "word": "com",
+        "z": -49.9,
+        "per10k_class1": 0.84,
+        "per10k_class0": 8.35
+      },
+      {
+        "word": "bored",
+        "z": -47.9,
+        "per10k_class1": 0.51,
+        "per10k_class0": 6.86
+      },
+      {
+        "word": "crush",
+        "z": -47.2,
+        "per10k_class1": 0.42,
+        "per10k_class0": 6.38
+      },
+      {
+        "word": "are",
+        "z": -44.9,
+        "per10k_class1": 26.8,
+        "per10k_class0": 50.22
+      },
+      {
+        "word": "dm",
+        "z": -44.3,
+        "per10k_class1": 0.05,
+        "per10k_class0": 4.41
+      },
+      {
+        "word": "discord",
+        "z": -43.8,
+        "per10k_class1": 0.08,
+        "per10k_class0": 4.44
+      },
+      {
+        "word": "amp",
+        "z": -42.9,
+        "per10k_class1": 3.85,
+        "per10k_class0": 13.67
+      },
+      {
+        "word": "wanna",
+        "z": -42.4,
+        "per10k_class1": 3.48,
+        "per10k_class0": 12.8
+      },
+      {
+        "word": "teenagers",
+        "z": -41.4,
+        "per10k_class1": 0.09,
+        "per10k_class0": 4.02
+      },
+      {
+        "word": "reddit",
+        "z": -41.0,
+        "per10k_class1": 2.6,
+        "per10k_class0": 10.61
+      }
+    ]
+  }
+}
