@@ -4,7 +4,9 @@ numpy==2.2.6
 pandas==2.3.3
 scikit-learn==1.8.0
 matplotlib==3.10.8
-# Neural model (Bi-LSTM + GloVe); Keras 3 ships with TensorFlow 2.20
-tensorflow==2.20.0
+# Neural model (Bi-LSTM + GloVe): same versions as the Kaggle training run
+# (recorded in eval/results/bilstm_glove.json), so the saved model reloads identically
+tensorflow==2.21.0
+keras==3.13.2
 # Tests
 pytest==8.3.5
