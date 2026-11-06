@@ -71,7 +71,7 @@ def main() -> None:
         r["top_label_ece"] = top_label_ece(y[mask], probs[mask])
         return r
 
-    res = {"model_file": Path(args.model).name, "audit": audit,
+    res = {"model_file": Path(args.model).name, "audit": audit, "weights_check": getattr(model, "weights_check", None),
            "official_test": report(np.ones(len(y), bool)),
            "test_without_train_duplicates": report(~in_train)}
     (out / "face_fer2013.json").write_text(json.dumps(res, indent=2), encoding="utf-8")
