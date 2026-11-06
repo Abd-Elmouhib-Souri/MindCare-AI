@@ -133,3 +133,34 @@ def evaluate(y, score, threshold: float, with_ci: bool = True) -> dict:
     if with_ci:
         out["ci95"] = bootstrap_ci(y, score, threshold)
     return out
+
+
+def paired_bootstrap_diff(y, score_a, thr_a: float, score_b, thr_b: float,
+                          n_boot: int = N_BOOT, seed: int = SEED) -> dict:
+    """Compare model B with model A on the SAME evaluation set.
+
+    Each resample draws the same posts for both models, so the interval is for the
+    DIFFERENCE (B - A) and accounts for the fact that both models see the same
+    easy/hard posts. If the 95 % interval contains 0, the difference is not significant.
+    """
+    y = np.asarray(y)
+    sa, sb = np.asarray(score_a, dtype=float), np.asarray(score_b, dtype=float)
+    rng = np.random.default_rng(seed)
+    keys = ("accuracy", "macro_f1", "precision_1", "recall_1")
+    point_a, point_b = threshold_metrics(y, sa, thr_a), threshold_metrics(y, sb, thr_b)
+    out = {k: {"diff": point_b[k] - point_a[k], "samples": []} for k in keys}
+    out["roc_auc"] = {"diff": roc_auc_score(y, sb) - roc_auc_score(y, sa), "samples": []}
+    n = len(y)
+    for _ in range(n_boot):
+        idx = rng.integers(0, n, n)                      # same indices for both models = paired
+        ma, mb = threshold_metrics(y[idx], sa[idx], thr_a), threshold_metrics(y[idx], sb[idx], thr_b)
+        for k in keys:
+            out[k]["samples"].append(mb[k] - ma[k])
+        if len(np.unique(y[idx])) == 2:
+            out["roc_auc"]["samples"].append(roc_auc_score(y[idx], sb[idx]) - roc_auc_score(y[idx], sa[idx]))
+    for k, v in out.items():
+        s = v.pop("samples")
+        v["ci95"] = [float(np.percentile(s, 2.5)), float(np.percentile(s, 97.5))]
+        v["diff"] = float(v["diff"])
+        v["significant"] = not (v["ci95"][0] <= 0.0 <= v["ci95"][1])
+    return out

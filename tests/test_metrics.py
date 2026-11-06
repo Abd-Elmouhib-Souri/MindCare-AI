@@ -88,3 +88,24 @@ def test_split_proportions():
     assert share["train"] == pytest.approx(0.70, abs=0.02)
     assert share["val"] == pytest.approx(0.15, abs=0.02)
     assert share["test"] == pytest.approx(0.15, abs=0.02)
+
+
+def test_paired_bootstrap_identical_models_gives_zero_difference():
+    from mindcare.metrics import paired_bootstrap_diff
+    rng = np.random.default_rng(2)
+    y = rng.integers(0, 2, 300)
+    s = np.clip(y * 0.4 + rng.normal(0.3, 0.2, 300), 0, 1)
+    res = paired_bootstrap_diff(y, s, 0.5, s, 0.5, n_boot=100)
+    assert res["macro_f1"]["diff"] == 0.0 and res["macro_f1"]["ci95"] == [0.0, 0.0]
+    assert res["macro_f1"]["significant"] is False
+
+
+def test_paired_bootstrap_detects_a_clearly_better_model():
+    from mindcare.metrics import paired_bootstrap_diff
+    rng = np.random.default_rng(3)
+    y = rng.integers(0, 2, 500)
+    weak = rng.uniform(0, 1, 500)                       # random scores
+    strong = np.clip(y * 0.6 + rng.normal(0.2, 0.1, 500), 0, 1)
+    res = paired_bootstrap_diff(y, weak, 0.5, strong, 0.5, n_boot=200)
+    assert res["macro_f1"]["diff"] > 0.3 and res["macro_f1"]["significant"] is True
+    assert res["roc_auc"]["ci95"][0] > 0

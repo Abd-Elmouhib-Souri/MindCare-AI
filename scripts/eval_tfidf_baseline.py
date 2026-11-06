@@ -20,11 +20,10 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))   # make "mindcare" importable
 from mindcare.data import load_clean_dataset  # noqa: E402
+from mindcare.tfidf import fit_tfidf_logreg  # noqa: E402
 from mindcare.metrics import TARGET_RECALL, choose_threshold, evaluate, wilson_interval  # noqa: E402
 
 CHALLENGE = Path("eval/challenge/challenge_v1.csv")
@@ -49,12 +48,9 @@ def main() -> None:
 
     # Same configuration as probe P4: word 1-2 grams, NO stopword removal (keeps negations)
     print("Fitting TF-IDF + logistic regression on TRAIN...")
-    vec = TfidfVectorizer(lowercase=True, ngram_range=(1, 2), min_df=5, max_features=200_000,
-                          sublinear_tf=True, dtype=np.float32)
-    clf = LogisticRegression(max_iter=2000)
-    clf.fit(vec.fit_transform(tr.text), tr.y)
+    predict = fit_tfidf_logreg(tr.text, tr.y)                         # shared definition: mindcare/tfidf.py
 
-    val_score = clf.predict_proba(vec.transform(va.text))[:, 1]
+    val_score = predict(va.text)
     thr = choose_threshold(va.y.to_numpy(), val_score)                # pre-registered rule
     print(f"Threshold chosen on validation (recall_1 >= {TARGET_RECALL}): {thr:.4f}")
     print("Bootstrapping 95 % intervals (1000 resamples, about 1 minute)...")
@@ -68,7 +64,7 @@ def main() -> None:
 
     # Challenge set: per-group accuracy with Wilson intervals (only 20 items per group)
     ch = pd.read_csv(CHALLENGE)
-    ch["score"] = clf.predict_proba(vec.transform(ch.text))[:, 1]
+    ch["score"] = predict(ch.text)
     ch["pred"] = (ch["score"] >= thr).astype(int)
     ch["correct"] = (ch["pred"] == ch["label"]).astype(int)
     groups = {}
