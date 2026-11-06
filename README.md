@@ -156,7 +156,7 @@ test sampling, not training randomness. Details: [`eval/results/VOICE_TESS.md`](
 ```bash
 python -m venv .venv && source .venv/bin/activate      # Windows: .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-python -m pytest -q                                      # 27 tests
+python -m pytest -q                                      # 37 tests
 
 # Data (not in git): Suicide_Detection.csv (Kaggle link above), GloVe 6B 100d, FER-2013, TESS
 python scripts/audit_data.py      --csv path/to/Suicide_Detection.csv
@@ -169,15 +169,40 @@ python scripts/eval_voice.py --tess-dir "path/to/TESS Toronto emotional speech s
 ```
 Trained models are published as release assets, not in git.
 
+## Web demo
+A small React + TypeScript page served by a FastAPI API. It shows the text score on a 0-1 scale with the
+validation threshold, the challenge-set failures and the limitations (all numbers are read from
+`eval/results/`). The text is never stored or logged; empty or too long inputs are rejected (HTTP 422).
+
+**Live emotion lab (experimental, optional).** Webcam face and microphone voice, shown separately and never
+fused with the text score. The camera and the microphone start only after an explicit consent checkbox, each has
+a Stop button, and frames / 3-second WAV windows are analysed in memory and discarded. No face (OpenCV Haar
+cascade) or silence (RMS below 0.01) means no prediction. Each panel shows its measured accuracy: 57.5 % for the
+face model on FER-2013 test images without train duplicates, 45.3 % for the voice model on a speaker it never
+heard (chance 14.3 %). These models recognise posed expressions and acted speech; real-time use on webcams and
+everyday voices was **not** evaluated, so expect lower accuracy.
+
+```bash
+# terminal 1: the API (needs the Bi-LSTM folder from the v2.0 release)
+export MINDCARE_BILSTM_DIR=path/to/bilstm_models      # PowerShell: $env:MINDCARE_BILSTM_DIR = "..."
+# optional, live lab: the face and voice .keras files from the v2.0 release
+export MINDCARE_FACE_MODEL=path/to/best_vision_stage2.keras
+export MINDCARE_VOICE_MODEL=path/to/best_audio_model_stage2.keras
+uvicorn mindcare.api:app --port 8000                  # API docs: http://127.0.0.1:8000/docs
+# terminal 2: the page
+cd web && npm ci && npm run dev                       # open http://localhost:5173
+```
+
 ## Repository layout
 ```
 mindcare/        shared, tested code: splits, preprocessing, metrics, models, safe loaders
 scripts/         one script per step (audit, probes, training, evaluation)
+web/             React + TypeScript demo page (talks to mindcare/api.py)
 notebooks/       Kaggle notebooks (training, final test)
 eval/audit/      dataset audit and shortcut probes (raw posts are git-ignored)
 eval/challenge/  frozen synthetic challenge set
 eval/results/    every reported number, as JSON + Markdown
-tests/           27 unit tests (mutation-checked metrics)
+tests/           48 unit tests (mutation-checked metrics, API and live-lab guards)
 ```
 
 ## Roadmap

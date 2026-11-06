@@ -61,10 +61,10 @@ def naming_anomalies(items: list) -> list:
             if parse_speaker_word(os.path.basename(p))[0] != spk]
 
 
-def extract_3d_mfcc(path: str) -> np.ndarray:
-    """(40, 150, 3) tensor: MFCC, delta, delta-delta; zero-padded or truncated to 150 frames."""
+def mfcc_from_signal(y: np.ndarray) -> np.ndarray:
+    """(40, 150, 3) tensor from a mono 22,050 Hz signal: MFCC, delta, delta-delta; padded/truncated to 150 frames.
+    Shared by evaluation (files) and the live microphone endpoint, so both see identical features."""
     import librosa
-    y, _ = librosa.load(path, sr=SAMPLE_RATE, mono=True)
     mfcc = librosa.feature.mfcc(y=y, sr=SAMPLE_RATE, n_mfcc=N_MFCC)
     chans = [mfcc, librosa.feature.delta(mfcc), librosa.feature.delta(mfcc, order=2)]
     out = []
@@ -72,6 +72,13 @@ def extract_3d_mfcc(path: str) -> np.ndarray:
         c = c[:, :MAX_PAD_LEN]
         out.append(np.pad(c, ((0, 0), (0, MAX_PAD_LEN - c.shape[1])), mode="constant"))
     return np.stack(out, axis=-1).astype(np.float32)
+
+
+def extract_3d_mfcc(path: str) -> np.ndarray:
+    """(40, 150, 3) tensor for an audio file (resampled to 22,050 Hz mono)."""
+    import librosa
+    y, _ = librosa.load(path, sr=SAMPLE_RATE, mono=True)
+    return mfcc_from_signal(y)
 
 
 def build_audio_model(weights: str = "imagenet"):

@@ -11,5 +11,10 @@ keras==3.13.2
 # Face (FER-2013) and voice (TESS) modules: same versions as the original training code
 pillow==12.0.0
 librosa==0.11.0
-# Tests
+# Web API for the text model
+fastapi==0.115.12
+uvicorn==0.34.2
+# Tests (httpx is needed by FastAPI's TestClient)
 pytest==8.3.5
+httpx==0.28.1
+opencv-python-headless==4.10.0.84
