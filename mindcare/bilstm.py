@@ -76,7 +76,7 @@ def load_bilstm(model_dir: str):
     import json
     from pathlib import Path
 
-    from mindcare.preprocess import clean_for_model
+    from mindcare.preprocess import model_input
 
     model_dir = Path(model_dir)
     model = keras.models.load_model(model_dir / "bilstm_glove.keras")   # custom layer registered above
@@ -86,7 +86,7 @@ def load_bilstm(model_dir: str):
                                    output_sequence_length=cfg["max_len"], vocabulary=cfg["vocab"][2:])
 
     def predict(texts) -> np.ndarray:
-        ids = vec(np.array([clean_for_model(t) for t in texts], dtype=object)).numpy()
+        ids = vec(np.array([model_input(t) for t in texts], dtype=object)).numpy()   # same rule as training
         return model.predict(ids, batch_size=1024, verbose=0).ravel()
 
     return predict

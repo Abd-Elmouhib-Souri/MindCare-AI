@@ -4,7 +4,16 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from mindcare.preprocess import clean_for_model  # noqa: E402
+from mindcare.preprocess import UNKNOWN_TOKEN, clean_for_model, model_input  # noqa: E402
+
+
+def test_model_input_is_never_empty():
+    # a URL-only post survives the audit cleaning ("https x com") but is empty after model cleaning;
+    # an empty input would give a fully masked sequence, rejected by the GPU LSTM (Kaggle crash, 6 Nov 2026)
+    assert clean_for_model("https://example.com/abc") == ""
+    assert model_input("https://example.com/abc") == UNKNOWN_TOKEN
+    assert model_input("&gt; <br>") == UNKNOWN_TOKEN
+    assert model_input("I feel alone") == "i feel alone"
 
 
 def test_negation_words_are_kept():

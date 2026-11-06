@@ -35,3 +35,15 @@ def clean_for_model(text: str) -> str:
     text = _CLITIC.sub(r"\1 '\2", text)
     text = re.sub(r"[^a-z0-9'\s]", " ", text)            # keep letters, digits, apostrophes
     return re.sub(r"\s+", " ", text).strip()
+
+
+UNKNOWN_TOKEN = "[UNK]"   # TextVectorization maps this to id 1 (out-of-vocabulary), never to 0 (padding)
+
+
+def model_input(text: str) -> str:
+    """Cleaned text that is NEVER empty.
+    A post made only of a URL or HTML becomes "" after cleaning -> all-padding sequence
+    -> fully masked row, which the GPU (cuDNN) LSTM rejects. We give such posts one
+    unknown token instead: the model sees 'no usable words', which is the truth."""
+    cleaned = clean_for_model(text)
+    return cleaned if cleaned else UNKNOWN_TOKEN

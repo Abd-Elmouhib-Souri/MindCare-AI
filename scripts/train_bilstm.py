@@ -33,7 +33,7 @@ import tensorflow as tf  # noqa: E402
 
 from mindcare.bilstm import build_bilstm, load_glove_matrix  # noqa: E402
 from mindcare.data import load_clean_dataset  # noqa: E402
-from mindcare.preprocess import clean_for_model  # noqa: E402
+from mindcare.preprocess import clean_for_model, model_input  # noqa: E402
 from mindcare.report import CHALLENGE, build_report, write_report  # noqa: E402
 
 
@@ -76,8 +76,15 @@ def main() -> None:
     clean = lambda s: [clean_for_model(t) for t in s]     # noqa: E731
     vectorizer.adapt(tf.data.Dataset.from_tensor_slices(clean(tr.text)).batch(1024))
     vocab = vectorizer.get_vocabulary()                    # index 0 = '' (pad), 1 = '[UNK]'
-    to_ids = lambda s: vectorizer(np.array(clean(s), dtype=object)).numpy()  # noqa: E731
+    # model_input(): never-empty text (empty posts -> one [UNK] token). Same function at reload time.
+    to_ids = lambda s: vectorizer(np.array([model_input(t) for t in s], dtype=object)).numpy()  # noqa: E731
     Xtr, Xva, Xch = to_ids(tr.text), to_ids(va.text), to_ids(ch.text)
+    n_empty = {name: int(sum(clean_for_model(t) == "" for t in s))
+               for name, s in (("train", tr.text), ("val", va.text))}
+    print(f"Posts empty after model cleaning (given one [UNK] token): {n_empty}")
+    # Guard that also fails on CPU: no row may be all padding (cuDNN rejects fully masked rows)
+    for name, X in (("train", Xtr), ("val", Xva), ("challenge", Xch)):
+        assert (X != 0).any(axis=1).all(), f"{name}: a sequence is all padding"
 
     matrix, coverage = load_glove_matrix(args.glove, vocab)
     print(f"GloVe coverage of the vocabulary: {coverage:.1%}")
