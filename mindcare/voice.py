@@ -35,19 +35,30 @@ def parse_speaker_word(file_name: str):
 
 def list_tess(tess_dir: str) -> list:
     """[(path, emotion, speaker, word)] with the original de-duplication by file name.
-    Sorted, so the order is the same on every operating system."""
+    Sorted, so the order is the same on every operating system.
+    The speaker comes from the FOLDER name (OAF_angry -> OAF): TESS has at least one file
+    with a typo in its name ('OA_...' instead of 'OAF_...'), which created a fake 3rd speaker
+    when the speaker was read from the file name (bug found on the real data, 6 Nov 2026)."""
     items, seen = [], set()
     for path in sorted(glob(os.path.join(tess_dir, "**", "*.wav"), recursive=True)):
         name = os.path.basename(path)
         if name in seen:
             continue
         seen.add(name)
-        emotion = parse_emotion(os.path.basename(os.path.dirname(path)))
+        folder = os.path.basename(os.path.dirname(path))
+        emotion = parse_emotion(folder)
         if emotion is None:
             continue
-        speaker, word = parse_speaker_word(name)
+        speaker = folder.split("_")[0].upper()
+        _, word = parse_speaker_word(name)
         items.append((path, emotion, speaker, word))
     return items
+
+
+def naming_anomalies(items: list) -> list:
+    """File names whose speaker prefix differs from their folder (reported, not silently fixed)."""
+    return [os.path.basename(p) for p, _, spk, _ in items
+            if parse_speaker_word(os.path.basename(p))[0] != spk]
 
 
 def extract_3d_mfcc(path: str) -> np.ndarray:

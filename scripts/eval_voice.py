@@ -29,7 +29,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from mindcare.multiclass import (EMOTIONS, markdown_table, multiclass_bootstrap,  # noqa: E402
                                  multiclass_metrics, per_class_table)
-from mindcare.voice import extract_3d_mfcc, list_tess, train_two_stage  # noqa: E402
+from mindcare.voice import extract_3d_mfcc, list_tess, naming_anomalies, train_two_stage  # noqa: E402
 
 
 def scored(y, pred) -> dict:
@@ -53,6 +53,10 @@ def main() -> None:
 
     items = list_tess(args.tess_dir)
     speakers = np.array([s for _, _, s, _ in items])
+    anomalies = naming_anomalies(items)
+    print(f"File names whose prefix differs from their folder: {anomalies}")
+    # Guard: TESS has exactly 2 speakers; anything else means the parsing is wrong
+    assert set(speakers) == {"OAF", "YAF"}, f"unexpected speakers: {set(speakers)}"
     words = np.array([w for _, _, _, w in items])
     y = np.array([e for _, e, _, _ in items])
     print(f"{len(items):,} files | speakers " + str({str(k): int(v) for k, v in zip(*np.unique(speakers, return_counts=True))}))
@@ -78,7 +82,7 @@ def main() -> None:
     }
     existing = keras.models.load_model(args.model)
     pred_a = existing.predict(X[te_idx], batch_size=64, verbose=0).argmax(axis=1)
-    res = {"n_files": len(items), "random_split_overlap": overlap,
+    res = {"n_files": len(items), "naming_anomalies": anomalies, "random_split_overlap": overlap,
            "A_random_split_existing_model": scored(y[te_idx], pred_a)}
     print(f"A (random split, existing model): accuracy {res['A_random_split_existing_model']['accuracy']:.3f}")
 

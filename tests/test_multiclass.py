@@ -55,3 +55,15 @@ def test_tess_parsing():
     assert parse_emotion("readme") is None
     assert parse_speaker_word("OAF_back_angry.wav") == ("OAF", "back")
     assert parse_speaker_word("YAF_youth_ps.wav") == ("YAF", "youth")
+
+
+def test_tess_speaker_comes_from_folder_not_file_name(tmp_path):
+    # Real TESS has a file named 'OA_...' inside an OAF folder; it must stay speaker OAF
+    from mindcare.voice import list_tess, naming_anomalies
+    for folder, name in (("OAF_neutral", "OA_bite_neutral.wav"), ("OAF_neutral", "OAF_back_neutral.wav"),
+                         ("YAF_angry", "YAF_back_angry.wav")):
+        (tmp_path / folder).mkdir(exist_ok=True)
+        (tmp_path / folder / name).write_bytes(b"")
+    items = list_tess(str(tmp_path))
+    assert sorted({spk for _, _, spk, _ in items}) == ["OAF", "YAF"]
+    assert naming_anomalies(items) == ["OA_bite_neutral.wav"]
