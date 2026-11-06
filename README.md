@@ -167,7 +167,17 @@ python scripts/final_test.py --csv path/to/Suicide_Detection.csv --bilstm-dir pa
 python scripts/eval_face.py  --fer-dir path/to/images --model path/to/best_vision_stage2.keras
 python scripts/eval_voice.py --tess-dir "path/to/TESS Toronto emotional speech set data" --model path/to/best_audio_model_stage2.keras
 ```
-Trained models are published as release assets, not in git.
+Trained models are published as assets of the
+[v2.0 release](https://github.com/Abd-Elmouhib-Souri/Mental-Health-AI-Detection/releases/tag/v2.0), not in git.
+The face and voice files are byte-identical to the files evaluated above (same SHA-256).
+
+| File | Contents | SHA-256 |
+|---|---|---|
+| `bilstm_glove_models.zip` | `bilstm_glove.keras`, `bilstm_vocab.json`, validation scores | `b9099efe2cea47a8a9e2eea186d561239601154e8709955dc3c391bc34a09056` |
+| `face_efficientnetb0_fer2013.keras` | face model (EfficientNetB0, FER-2013) | `aad65758ce97573a17a7b80449ca89d5d436f7b25e7db285ae41705efd164b38` |
+| `voice_mobilenetv2_tess_randomsplit.keras` | voice model (MobileNetV2 on MFCC, TESS random split) | `c7496d8eb89e6bdfcbdaef036d4ef44c1e8cb5545f04f3e4da3b7e29dc348fa1` |
+
+Check a download: `sha256sum -c SHA256SUMS.txt` (Linux/macOS) or `Get-FileHash <file>` (PowerShell).
 
 ## Web demo
 A small React + TypeScript page served by a FastAPI API. It shows the text score on a 0-1 scale with the
@@ -183,11 +193,11 @@ heard (chance 14.3 %). These models recognise posed expressions and acted speech
 everyday voices was **not** evaluated, so expect lower accuracy.
 
 ```bash
-# terminal 1: the API (needs the Bi-LSTM folder from the v2.0 release)
+# terminal 1: the API (unzip bilstm_glove_models.zip from the v2.0 release into a folder)
 export MINDCARE_BILSTM_DIR=path/to/bilstm_models      # PowerShell: $env:MINDCARE_BILSTM_DIR = "..."
 # optional, live lab: the face and voice .keras files from the v2.0 release
-export MINDCARE_FACE_MODEL=path/to/best_vision_stage2.keras
-export MINDCARE_VOICE_MODEL=path/to/best_audio_model_stage2.keras
+export MINDCARE_FACE_MODEL=path/to/face_efficientnetb0_fer2013.keras
+export MINDCARE_VOICE_MODEL=path/to/voice_mobilenetv2_tess_randomsplit.keras
 uvicorn mindcare.api:app --port 8000                  # API docs: http://127.0.0.1:8000/docs
 # terminal 2: the page
 cd web && npm ci && npm run dev                       # open http://localhost:5173
