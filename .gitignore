@@ -1,26 +1,29 @@
-# Bibliothèques
+# Python environment and caches
 .venv/
+venv/
 __pycache__/
+.pytest_cache/
 
-# BLOQUER les fichiers GloVe (très lourds)
-glove.6B.50d.txt
-glove.6B.100d.txt
-glove.6B.200d.txt
-glove.6B.300d.txt
-
-# Bloquer tous les .txt PAR DÉFAUT
-*.txt
-
-# SAUF le fichier requirements.txt (L'exception !)
-!requirements.txt
-
-# Autres fichiers inutiles
-temp_input.wav
-.DS_Store
-data/
+# Data: never committed (download instructions in README). Root folder only:
+# a bare "data/" would also hide code folders such as mindcare/data/.
+/data/
 *.csv
-# Raw posts for manual checking: sensitive, never commit
+!eval/challenge/*.csv
+glove.*.txt
+
+# Trained models and run outputs: published as release assets, not in git
+/models/
+*.keras
+*.h5
+*.pkl
+*.npy
+*.npz
+
+# Raw posts for manual checking (sensitive): never committed
 eval/audit/*PRIVATE*
 
-# Synthetic challenge set (no real posts, safe to publish)
-!eval/challenge/*.csv
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
