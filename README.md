@@ -46,10 +46,10 @@ a fusion can't be evaluated without data where the same person is filmed, record
 - **Frozen split** by hash of the normalised text (70 / 15 / 15): duplicates can never cross splits;
   0 texts found in two splits. No author id exists, so the split cannot be grouped by author.
 - **Pre-registered threshold rule:** best precision among thresholds with distress recall ≥ 0.90 **on validation**.
-- **Challenge set** (80 synthetic sentences, 4 groups), frozen at commit `ecdcf5b` **before** any model was
+- **Challenge set** (80 synthetic sentences, 4 groups), frozen at commit `07da3bb` **before** any model was
   evaluated on it: implicit distress without keywords, keywords without distress, distress in teen topics,
   negations. 12 seed items + 68 drafted with AI assistance; every label reviewed by the author; no real posts.
-- **Test split scored once**, with rules committed beforehand (`1971c07`) and two reproducibility gates
+- **Test split scored once**, with rules committed beforehand (`31d5385`) and two reproducibility gates
   that stop the run before the test if they fail (see *Reproducibility notes*).
 
 ### Models
